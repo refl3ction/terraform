@@ -1,0 +1,4 @@
+---
+root_file: false
+vars:
+  aws_region: us-east-1

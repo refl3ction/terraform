@@ -1,0 +1,38 @@
+---
+root_file: true
+template_files:
+  _backend.tf: |
+    terraform {
+      backend "s3" {
+        bucket         = "{{ .tf_state_bucket_name }}"
+        encrypt        = true
+        key            = "{{ .tfgen_working_dir }}/terraform.tfstate"
+        region         = "{{ .aws_region }}"
+        role_arn       = "arn:aws:iam::{{ .aws_account_id }}:role/terraform"
+      }
+    }
+  _provider.tf: |
+    provider "aws" {
+      region = "{{ .aws_region }}"
+      allowed_account_ids = [
+        "{{ .aws_account_id }}"
+      ]
+      assume_role {
+        role_arn = "arn:aws:iam::{{ .aws_account_id }}:role/terraform"
+      }
+    }
+  _vars.tf: |
+    variable "env" {
+      type    = string
+      default = "{{ .env }}"
+    }
+
+    variable "aws_account_id" {
+      type    = string
+      default = "{{ .aws_account_id }}"
+    }
+
+    variable "aws_region" {
+      type    = string
+      default = "{{ .aws_region }}"
+    }

@@ -1,0 +1,6 @@
+---
+root_file: false
+vars:
+  aws_account_id: 935807483511
+  tf_state_bucket_name: dones-tf-state
+  env: prod
